@@ -30,7 +30,7 @@ func (a *Byte) Value(i int) byte {
 
 func NewByte(a arrow.Array) (*Byte, error) {
 	if direct, ok := a.(*array.Uint8); ok {
-		return &Byte{direct: direct}, nil
+		return &Byte{direct: direct, Array: a}, nil
 	}
 
 	r := &Byte{}
@@ -141,7 +141,7 @@ func (a *Int8) Value(i int) int8 {
 
 func NewInt8(a arrow.Array) (*Int8, error) {
 	if direct, ok := a.(*array.Int8); ok {
-		return &Int8{direct: direct}, nil
+		return &Int8{direct: direct, Array: a}, nil
 	}
 
 	r := &Int8{}
@@ -252,7 +252,7 @@ func (a *Int16) Value(i int) int16 {
 
 func NewInt16(a arrow.Array) (*Int16, error) {
 	if direct, ok := a.(*array.Int16); ok {
-		return &Int16{direct: direct}, nil
+		return &Int16{direct: direct, Array: a}, nil
 	}
 
 	r := &Int16{}
@@ -363,7 +363,7 @@ func (a *Int32) Value(i int) int32 {
 
 func NewInt32(a arrow.Array) (*Int32, error) {
 	if direct, ok := a.(*array.Int32); ok {
-		return &Int32{direct: direct}, nil
+		return &Int32{direct: direct, Array: a}, nil
 	}
 
 	r := &Int32{}
@@ -474,7 +474,7 @@ func (a *Int64) Value(i int) int64 {
 
 func NewInt64(a arrow.Array) (*Int64, error) {
 	if direct, ok := a.(*array.Int64); ok {
-		return &Int64{direct: direct}, nil
+		return &Int64{direct: direct, Array: a}, nil
 	}
 
 	r := &Int64{}
@@ -585,7 +585,7 @@ func (a *Uint8) Value(i int) uint8 {
 
 func NewUint8(a arrow.Array) (*Uint8, error) {
 	if direct, ok := a.(*array.Uint8); ok {
-		return &Uint8{direct: direct}, nil
+		return &Uint8{direct: direct, Array: a}, nil
 	}
 
 	r := &Uint8{}
@@ -696,7 +696,7 @@ func (a *Uint16) Value(i int) uint16 {
 
 func NewUint16(a arrow.Array) (*Uint16, error) {
 	if direct, ok := a.(*array.Uint16); ok {
-		return &Uint16{direct: direct}, nil
+		return &Uint16{direct: direct, Array: a}, nil
 	}
 
 	r := &Uint16{}
@@ -807,7 +807,7 @@ func (a *Uint32) Value(i int) uint32 {
 
 func NewUint32(a arrow.Array) (*Uint32, error) {
 	if direct, ok := a.(*array.Uint32); ok {
-		return &Uint32{direct: direct}, nil
+		return &Uint32{direct: direct, Array: a}, nil
 	}
 
 	r := &Uint32{}
@@ -918,7 +918,7 @@ func (a *Uint64) Value(i int) uint64 {
 
 func NewUint64(a arrow.Array) (*Uint64, error) {
 	if direct, ok := a.(*array.Uint64); ok {
-		return &Uint64{direct: direct}, nil
+		return &Uint64{direct: direct, Array: a}, nil
 	}
 
 	r := &Uint64{}
@@ -1029,7 +1029,7 @@ func (a *Float32) Value(i int) float32 {
 
 func NewFloat32(a arrow.Array) (*Float32, error) {
 	if direct, ok := a.(*array.Float32); ok {
-		return &Float32{direct: direct}, nil
+		return &Float32{direct: direct, Array: a}, nil
 	}
 
 	r := &Float32{}
@@ -1140,7 +1140,7 @@ func (a *Float64) Value(i int) float64 {
 
 func NewFloat64(a arrow.Array) (*Float64, error) {
 	if direct, ok := a.(*array.Float64); ok {
-		return &Float64{direct: direct}, nil
+		return &Float64{direct: direct, Array: a}, nil
 	}
 
 	r := &Float64{}

@@ -30,7 +30,7 @@ func (a *{{.GoName}}) Value(i int) {{.GoType}} {
 
 func New{{.GoName}}(a arrow.Array) (*{{.GoName}}, error) {
     if direct, ok := a.(*array.{{.ArrowType}}); ok {
-        return &{{.GoName}}{direct: direct}, nil
+        return &{{.GoName}}{direct: direct, Array: a}, nil
     }
 
     r := &{{.GoName}}{}
