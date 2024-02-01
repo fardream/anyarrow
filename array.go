@@ -14,6 +14,10 @@ type Byte struct {
 	getFunc func(int) byte
 }
 
+func (a *Byte) IsDirect() bool {
+	return a.direct != nil
+}
+
 func (a *Byte) Value(i int) byte {
 	if a.direct != nil {
 		return a.direct.Value(i)
@@ -119,6 +123,10 @@ type Int8 struct {
 	// Embed the array
 	arrow.Array
 	getFunc func(int) int8
+}
+
+func (a *Int8) IsDirect() bool {
+	return a.direct != nil
 }
 
 func (a *Int8) Value(i int) int8 {
@@ -228,6 +236,10 @@ type Int16 struct {
 	getFunc func(int) int16
 }
 
+func (a *Int16) IsDirect() bool {
+	return a.direct != nil
+}
+
 func (a *Int16) Value(i int) int16 {
 	if a.direct != nil {
 		return a.direct.Value(i)
@@ -333,6 +345,10 @@ type Int32 struct {
 	// Embed the array
 	arrow.Array
 	getFunc func(int) int32
+}
+
+func (a *Int32) IsDirect() bool {
+	return a.direct != nil
 }
 
 func (a *Int32) Value(i int) int32 {
@@ -442,6 +458,10 @@ type Int64 struct {
 	getFunc func(int) int64
 }
 
+func (a *Int64) IsDirect() bool {
+	return a.direct != nil
+}
+
 func (a *Int64) Value(i int) int64 {
 	if a.direct != nil {
 		return a.direct.Value(i)
@@ -547,6 +567,10 @@ type Uint8 struct {
 	// Embed the array
 	arrow.Array
 	getFunc func(int) uint8
+}
+
+func (a *Uint8) IsDirect() bool {
+	return a.direct != nil
 }
 
 func (a *Uint8) Value(i int) uint8 {
@@ -656,6 +680,10 @@ type Uint16 struct {
 	getFunc func(int) uint16
 }
 
+func (a *Uint16) IsDirect() bool {
+	return a.direct != nil
+}
+
 func (a *Uint16) Value(i int) uint16 {
 	if a.direct != nil {
 		return a.direct.Value(i)
@@ -761,6 +789,10 @@ type Uint32 struct {
 	// Embed the array
 	arrow.Array
 	getFunc func(int) uint32
+}
+
+func (a *Uint32) IsDirect() bool {
+	return a.direct != nil
 }
 
 func (a *Uint32) Value(i int) uint32 {
@@ -870,6 +902,10 @@ type Uint64 struct {
 	getFunc func(int) uint64
 }
 
+func (a *Uint64) IsDirect() bool {
+	return a.direct != nil
+}
+
 func (a *Uint64) Value(i int) uint64 {
 	if a.direct != nil {
 		return a.direct.Value(i)
@@ -977,6 +1013,10 @@ type Float32 struct {
 	getFunc func(int) float32
 }
 
+func (a *Float32) IsDirect() bool {
+	return a.direct != nil
+}
+
 func (a *Float32) Value(i int) float32 {
 	if a.direct != nil {
 		return a.direct.Value(i)
@@ -1082,6 +1122,10 @@ type Float64 struct {
 	// Embed the array
 	arrow.Array
 	getFunc func(int) float64
+}
+
+func (a *Float64) IsDirect() bool {
+	return a.direct != nil
 }
 
 func (a *Float64) Value(i int) float64 {

@@ -14,6 +14,10 @@ import (
     getFunc func(int) {{.GoType}}
 }
 
+func (a *{{.GoName}}) IsDirect() bool {
+    return a.direct != nil
+}
+
 func (a *{{.GoName}}) Value(i int) {{.GoType}} {
     if a.direct != nil {
         return a.direct.Value(i)

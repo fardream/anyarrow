@@ -30,7 +30,21 @@ func Example() {
 		fmt.Println(u64.Value(i))
 	}
 
+	f32, err := anyarrow.NewFloat32(a)
+	if !f32.IsDirect() {
+		panic("f32 is not direct")
+	}
+
+	for i := 0; i < 5; i++ {
+		fmt.Println(f32.Value(i))
+	}
+
 	// Output: 0
+	// 1
+	// 2
+	// 3
+	// 4
+	// 0
 	// 1
 	// 2
 	// 3
