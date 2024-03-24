@@ -31,9 +31,13 @@ type pair struct {
 	arrowtype string
 }
 
+type ArrowType struct {
+	Array string
+	ID    string
+}
 type genValue struct {
-	t             pair
-	allArrowTypes []string
+	t          pair
+	ArrowTypes []ArrowType
 }
 
 var titleCaser = cases.Title(language.AmericanEnglish)
@@ -48,10 +52,6 @@ func (p genValue) GoType() string {
 
 func (p genValue) ArrowType() string {
 	return p.t.arrowtype
-}
-
-func (p genValue) AllArrowTypes() []string {
-	return p.allArrowTypes
 }
 
 func main() {
@@ -82,14 +82,16 @@ func main() {
 
 	genvalues := []genValue{}
 
+	upperCaser := cases.Upper(language.AmericanEnglish)
 	for _, p := range allpairs {
 		v := genValue{
 			t: p,
 		}
 		for _, a := range allArrowTypes {
-			if a != p.arrowtype {
-				v.allArrowTypes = append(v.allArrowTypes, a)
-			}
+			v.ArrowTypes = append(v.ArrowTypes, ArrowType{
+				Array: a,
+				ID:    upperCaser.String(a),
+			})
 		}
 		genvalues = append(genvalues, v)
 	}

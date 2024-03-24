@@ -36,7 +36,7 @@ func New{{.GoName}}(a arrow.Array) (*{{.GoName}}, error) {
     r := &{{.GoName}}{}
     {{ $gotype := .GoType}}
     switch v:= a.(type) {
-{{range .AllArrowTypes}}case *array.{{.}}:
+{{range .ArrowTypes}}case *array.{{.Array}}:
         r.Array = a
         r.getFunc =  func(i int) {{$gotype}} {
                 return {{$gotype}}(v.Value(i))
@@ -44,6 +44,27 @@ func New{{.GoName}}(a arrow.Array) (*{{.GoName}}, error) {
         return r, nil
 
 {{end -}}
+    case *array.Dictionary:
+        dt, ok := v.DataType().(*arrow.DictionaryType)
+        if !ok {
+            return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+        }
+        switch dt.ValueType.ID() {
+{{range .ArrowTypes}}case arrow.{{.ID}}:
+       		dictvalues, ok := v.Dictionary().(*array.{{.Array}})
+       		if !ok {
+       		    return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type {{.Array}}", v.Dictionary().DataType().String())
+       		}
+       		r.Array = a
+       		r.getFunc = func(i int) {{$gotype}} {
+       		    return {{$gotype}}(dictvalues.Value(v.GetValueIndex(i)))
+       		}
+
+       		return r, nil
+{{end -}}
+        default:
+            return nil, fmt.Errorf("cannot use %s dictionary for {{$gotype}}", dt.ValueType.String())
+        }
     default:
         return nil, fmt.Errorf("cannot use %s for gotype {{$gotype}}", a.String())
     }
