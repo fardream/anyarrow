@@ -52,7 +52,7 @@ func Example() {
 	// 4
 }
 
-func Example_Dictionary() {
+func Example_dictionary() {
 	mem := memory.NewGoAllocator()
 
 	dicttype := arrow.DictionaryType{
@@ -100,5 +100,56 @@ func Example_Dictionary() {
 	// 1024
 	// 1024
 	// 1023
+	// dict len: 2
+}
+
+func Example_string() {
+	mem := memory.NewGoAllocator()
+
+	dicttype := arrow.DictionaryType{
+		ValueType: &arrow.StringType{},
+		IndexType: &arrow.Int8Type{},
+	}
+
+	ab := array.NewDictionaryBuilder(mem, &dicttype)
+	defer ab.Release()
+
+	abb, ok := ab.(*array.BinaryDictionaryBuilder)
+	if !ok {
+		panic("not correct dictionary builder type")
+	}
+
+	abb.AppendString("abc")
+	abb.AppendString("def")
+	abb.AppendString("abc")
+	abb.AppendString("abc")
+	abb.AppendString("def")
+
+	dictarray := abb.NewArray()
+	defer dictarray.Release()
+
+	stringarray, err := anyarrow.NewString(dictarray)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("len: %d\n", stringarray.Len())
+	for i := 0; i < 5; i++ {
+		fmt.Println(stringarray.Value(i))
+	}
+
+	dict, ok := dictarray.(*array.Dictionary)
+	if !ok {
+		panic("not a dictionary")
+	}
+
+	fmt.Printf("dict len: %d", dict.Dictionary().Len())
+
+	// Output: len: 5
+	// abc
+	// def
+	// abc
+	// abc
+	// def
 	// dict len: 2
 }

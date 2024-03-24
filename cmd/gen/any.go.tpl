@@ -55,16 +55,19 @@ func New{{.GoName}}(a arrow.Array) (*{{.GoName}}, error) {
        		if !ok {
        		    return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type {{.Array}}", v.Dictionary().DataType().String())
        		}
-       		r.Array = a
+
+            r.Array = a
        		r.getFunc = func(i int) {{$gotype}} {
        		    return {{$gotype}}(dictvalues.Value(v.GetValueIndex(i)))
        		}
 
        		return r, nil
+
 {{end -}}
         default:
             return nil, fmt.Errorf("cannot use %s dictionary for {{$gotype}}", dt.ValueType.String())
         }
+
     default:
         return nil, fmt.Errorf("cannot use %s for gotype {{$gotype}}", a.String())
     }
