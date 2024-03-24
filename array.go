@@ -64,6 +64,13 @@ func NewByte(a arrow.Array) (*Byte, error) {
 		}
 		return r, nil
 
+	case *array.Uint8:
+		r.Array = a
+		r.getFunc = func(i int) byte {
+			return byte(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Uint16:
 		r.Array = a
 		r.getFunc = func(i int) byte {
@@ -113,6 +120,147 @@ func NewByte(a arrow.Array) (*Byte, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for byte", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype byte", a.String())
 	}
@@ -147,6 +295,13 @@ func NewInt8(a arrow.Array) (*Int8, error) {
 	r := &Int8{}
 
 	switch v := a.(type) {
+	case *array.Int8:
+		r.Array = a
+		r.getFunc = func(i int) int8 {
+			return int8(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Int16:
 		r.Array = a
 		r.getFunc = func(i int) int8 {
@@ -224,6 +379,147 @@ func NewInt8(a arrow.Array) (*Int8, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for int8", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype int8", a.String())
 	}
@@ -259,6 +555,13 @@ func NewInt16(a arrow.Array) (*Int16, error) {
 
 	switch v := a.(type) {
 	case *array.Int8:
+		r.Array = a
+		r.getFunc = func(i int) int16 {
+			return int16(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Int16:
 		r.Array = a
 		r.getFunc = func(i int) int16 {
 			return int16(v.Value(i))
@@ -335,6 +638,147 @@ func NewInt16(a arrow.Array) (*Int16, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for int16", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype int16", a.String())
 	}
@@ -383,6 +827,13 @@ func NewInt32(a arrow.Array) (*Int32, error) {
 		}
 		return r, nil
 
+	case *array.Int32:
+		r.Array = a
+		r.getFunc = func(i int) int32 {
+			return int32(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Int64:
 		r.Array = a
 		r.getFunc = func(i int) int32 {
@@ -446,6 +897,147 @@ func NewInt32(a arrow.Array) (*Int32, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for int32", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype int32", a.String())
 	}
@@ -501,6 +1093,13 @@ func NewInt64(a arrow.Array) (*Int64, error) {
 		}
 		return r, nil
 
+	case *array.Int64:
+		r.Array = a
+		r.getFunc = func(i int) int64 {
+			return int64(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Uint8:
 		r.Array = a
 		r.getFunc = func(i int) int64 {
@@ -557,6 +1156,147 @@ func NewInt64(a arrow.Array) (*Int64, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for int64", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype int64", a.String())
 	}
@@ -619,6 +1359,13 @@ func NewUint8(a arrow.Array) (*Uint8, error) {
 		}
 		return r, nil
 
+	case *array.Uint8:
+		r.Array = a
+		r.getFunc = func(i int) uint8 {
+			return uint8(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Uint16:
 		r.Array = a
 		r.getFunc = func(i int) uint8 {
@@ -668,6 +1415,147 @@ func NewUint8(a arrow.Array) (*Uint8, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for uint8", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype uint8", a.String())
 	}
@@ -737,6 +1625,13 @@ func NewUint16(a arrow.Array) (*Uint16, error) {
 		}
 		return r, nil
 
+	case *array.Uint16:
+		r.Array = a
+		r.getFunc = func(i int) uint16 {
+			return uint16(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Uint32:
 		r.Array = a
 		r.getFunc = func(i int) uint16 {
@@ -779,6 +1674,147 @@ func NewUint16(a arrow.Array) (*Uint16, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for uint16", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype uint16", a.String())
 	}
@@ -855,6 +1891,13 @@ func NewUint32(a arrow.Array) (*Uint32, error) {
 		}
 		return r, nil
 
+	case *array.Uint32:
+		r.Array = a
+		r.getFunc = func(i int) uint32 {
+			return uint32(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Uint64:
 		r.Array = a
 		r.getFunc = func(i int) uint32 {
@@ -890,6 +1933,147 @@ func NewUint32(a arrow.Array) (*Uint32, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for uint32", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype uint32", a.String())
 	}
@@ -973,6 +2157,13 @@ func NewUint64(a arrow.Array) (*Uint64, error) {
 		}
 		return r, nil
 
+	case *array.Uint64:
+		r.Array = a
+		r.getFunc = func(i int) uint64 {
+			return uint64(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Timestamp:
 		r.Array = a
 		r.getFunc = func(i int) uint64 {
@@ -1001,6 +2192,147 @@ func NewUint64(a arrow.Array) (*Uint64, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for uint64", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype uint64", a.String())
 	}
@@ -1105,6 +2437,13 @@ func NewFloat32(a arrow.Array) (*Float32, error) {
 		}
 		return r, nil
 
+	case *array.Float32:
+		r.Array = a
+		r.getFunc = func(i int) float32 {
+			return float32(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Float64:
 		r.Array = a
 		r.getFunc = func(i int) float32 {
@@ -1112,6 +2451,147 @@ func NewFloat32(a arrow.Array) (*Float32, error) {
 		}
 		return r, nil
 
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for float32", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype float32", a.String())
 	}
@@ -1223,6 +2703,154 @@ func NewFloat64(a arrow.Array) (*Float64, error) {
 		}
 		return r, nil
 
+	case *array.Float64:
+		r.Array = a
+		r.getFunc = func(i int) float64 {
+			return float64(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Dictionary:
+		dt, ok := v.DataType().(*arrow.DictionaryType)
+		if !ok {
+			return nil, fmt.Errorf("arrow dictionary's datatype is not dictionary")
+		}
+		switch dt.ValueType.ID() {
+		case arrow.INT8:
+			dictvalues, ok := v.Dictionary().(*array.Int8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT16:
+			dictvalues, ok := v.Dictionary().(*array.Int16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT32:
+			dictvalues, ok := v.Dictionary().(*array.Int32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.INT64:
+			dictvalues, ok := v.Dictionary().(*array.Int64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Int64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT8:
+			dictvalues, ok := v.Dictionary().(*array.Uint8)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint8", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT16:
+			dictvalues, ok := v.Dictionary().(*array.Uint16)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint16", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT32:
+			dictvalues, ok := v.Dictionary().(*array.Uint32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.UINT64:
+			dictvalues, ok := v.Dictionary().(*array.Uint64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Uint64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.TIMESTAMP:
+			dictvalues, ok := v.Dictionary().(*array.Timestamp)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Timestamp", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.DURATION:
+			dictvalues, ok := v.Dictionary().(*array.Duration)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Duration", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT32:
+			dictvalues, ok := v.Dictionary().(*array.Float32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float32", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		case arrow.FLOAT64:
+			dictvalues, ok := v.Dictionary().(*array.Float64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+			r.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+		default:
+			return nil, fmt.Errorf("cannot use %s dictionary for float64", dt.ValueType.String())
+		}
 	default:
 		return nil, fmt.Errorf("cannot use %s for gotype float64", a.String())
 	}
