@@ -95,6 +95,16 @@ func main() {
 		}
 		genvalues = append(genvalues, v)
 	}
+
+	genvalues = append(genvalues, genValue{
+		t: pair{"string", "String"},
+		ArrowTypes: []ArrowType{
+			{Array: "String", ID: "STRING"},
+			{Array: "Binary", ID: "BINARY"},
+			{Array: "LargeString", ID: "LARGE_STRING"},
+			{Array: "LargeBinary", ID: "LARGE_BINARY"},
+		},
+	})
 	orpanic(tmpl.Execute(&b, genvalues))
 
 	orpanic(os.WriteFile("array.go", must(format.Source(b.Bytes(), format.Options{
