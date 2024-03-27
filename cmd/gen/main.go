@@ -59,7 +59,7 @@ func main() {
 		"Int8", "Int16", "Int32", "Int64",
 		"Uint8", "Uint16", "Uint32", "Uint64",
 		"Timestamp", "Duration",
-		"Float32", "Float64",
+		"Float32", "Float64", "Date32", "Date64",
 	}
 
 	allpairs := []pair{

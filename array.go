@@ -130,6 +130,20 @@ func NewByte(a arrow.Array) (*Byte, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) byte {
+			return byte(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) byte {
+			return byte(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -283,6 +297,32 @@ func NewByte(a arrow.Array) (*Byte, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) byte {
+				return byte(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -420,6 +460,20 @@ func NewInt8(a arrow.Array) (*Int8, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int8 {
+			return int8(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int8 {
+			return int8(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -573,6 +627,32 @@ func NewInt8(a arrow.Array) (*Int8, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int8 {
+				return int8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -710,6 +790,20 @@ func NewInt16(a arrow.Array) (*Int16, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int16 {
+			return int16(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int16 {
+			return int16(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -863,6 +957,32 @@ func NewInt16(a arrow.Array) (*Int16, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int16 {
+				return int16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -1000,6 +1120,20 @@ func NewInt32(a arrow.Array) (*Int32, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int32 {
+			return int32(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int32 {
+			return int32(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -1153,6 +1287,32 @@ func NewInt32(a arrow.Array) (*Int32, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int32 {
+				return int32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -1290,6 +1450,20 @@ func NewInt64(a arrow.Array) (*Int64, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int64 {
+			return int64(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) int64 {
+			return int64(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -1443,6 +1617,32 @@ func NewInt64(a arrow.Array) (*Int64, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) int64 {
+				return int64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -1580,6 +1780,20 @@ func NewUint8(a arrow.Array) (*Uint8, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint8 {
+			return uint8(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint8 {
+			return uint8(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -1733,6 +1947,32 @@ func NewUint8(a arrow.Array) (*Uint8, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint8 {
+				return uint8(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -1870,6 +2110,20 @@ func NewUint16(a arrow.Array) (*Uint16, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint16 {
+			return uint16(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint16 {
+			return uint16(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -2023,6 +2277,32 @@ func NewUint16(a arrow.Array) (*Uint16, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint16 {
+				return uint16(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -2160,6 +2440,20 @@ func NewUint32(a arrow.Array) (*Uint32, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint32 {
+			return uint32(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint32 {
+			return uint32(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -2313,6 +2607,32 @@ func NewUint32(a arrow.Array) (*Uint32, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint32 {
+				return uint32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -2450,6 +2770,20 @@ func NewUint64(a arrow.Array) (*Uint64, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint64 {
+			return uint64(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) uint64 {
+			return uint64(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -2603,6 +2937,32 @@ func NewUint64(a arrow.Array) (*Uint64, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) uint64 {
+				return uint64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -2740,6 +3100,20 @@ func NewFloat32(a arrow.Array) (*Float32, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) float32 {
+			return float32(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) float32 {
+			return float32(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -2893,6 +3267,32 @@ func NewFloat32(a arrow.Array) (*Float32, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) float32 {
+				return float32(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
@@ -3030,6 +3430,20 @@ func NewFloat64(a arrow.Array) (*Float64, error) {
 		}
 		return r, nil
 
+	case *array.Date32:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) float64 {
+			return float64(v.Value(i))
+		}
+		return r, nil
+
+	case *array.Date64:
+		r.arrowArray.Array = a
+		r.getFunc = func(i int) float64 {
+			return float64(v.Value(i))
+		}
+		return r, nil
+
 	case *array.Dictionary:
 		dt, ok := v.DataType().(*arrow.DictionaryType)
 		if !ok {
@@ -3183,6 +3597,32 @@ func NewFloat64(a arrow.Array) (*Float64, error) {
 			dictvalues, ok := v.Dictionary().(*array.Float64)
 			if !ok {
 				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Float64", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE32:
+			dictvalues, ok := v.Dictionary().(*array.Date32)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date32", v.Dictionary().DataType().String())
+			}
+
+			r.arrowArray.Array = a
+			r.getFunc = func(i int) float64 {
+				return float64(dictvalues.Value(v.GetValueIndex(i)))
+			}
+
+			return r, nil
+
+		case arrow.DATE64:
+			dictvalues, ok := v.Dictionary().(*array.Date64)
+			if !ok {
+				return nil, fmt.Errorf("cannot convert arrow dictionary's dictionary %s to type Date64", v.Dictionary().DataType().String())
 			}
 
 			r.arrowArray.Array = a
